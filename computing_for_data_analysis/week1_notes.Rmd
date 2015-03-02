@@ -1,0 +1,161 @@
+---
+title: "Notes"
+author: "Isaac"
+date: "March 1, 2015"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 6
+---
+
+### Data types
+* character - `"a"`
+* numeric - `1.2`
+* integer - `1L`
+* complex - `0+0i`
+* logical - `TRUE`, `FALSE`
+
+* vector - array of elements same type
+* list - array of elements different type
+* matrix - row and column, contains dim attribute
+
+### Operators
+* `Inf` - infinity
+* `NaN` - not a number
+* `<-` - assignment (= in programming languages)
+* `#` - comments
+* `:` - used to generate sequence
+```{r}
+1:20
+```
+* `c()` - used to create vector
+```{r}
+c(1, 2, 3, 4, 5, 6, 10)
+```
+* `as` - casting
+```{r}
+x <- 1:20
+as.logical(x)  # cast from numeric to logical
+```
+* `matrix()` - create a matrix
+```{r}
+m <- matrix(nrow = 3, ncol = 5)
+m
+```
+* `dim()` - dimension
+```{r}
+dim(m) # show matrix dimension
+```
+* convert vector to matrix by assigning to dimension of the vector (fills column first)
+```{r}
+v <- 1:10
+dim(v) <- c(2,5)
+v
+```
+* `cbind()` or `rbind()` is also used to create matricies
+```{r}
+x <- 1:3
+y <- 5:7
+cbind(x,y)
+rbind(x,y)
+```
+* **list** - vector that can contain different classes
+```{r}
+list(1, "a", TRUE)  # will show [[ ]] to denote list
+```
+* **factor** - integer list where every integer has a label
+```{r}
+factor(c("label1", "label2", "label1", "label1", "label3"))
+```
+* __NA__ vs __NaN__ - NaN is undefined mathematical operation, Na is anything else
+* **data.frames** - table used to store data
+```{r}
+x <- data.frame(foo=c(1, 3, 5, 6), bar=c(T, T, F, T))
+x
+```
+
+### Subsets
+#### `[]` - single square brackets gives a subset of the same class
+```{r}
+x <- 1:10
+x[2] # single value
+x[4:6] # sequence of values
+x[x > 5] # logical comparison of values
+u <- x > 5 # get a logical sequence of indicies that are greater than 5
+u
+x[u] # logical squence used to get values
+```
+#### subsetting matricies
+```{r}
+m <- 1:9
+dim(m) <- c(3,3)
+m
+m[1,2] # get matrix first row 2nd column
+m[1,] # get first row
+m[,1] # get first column
+m[1, ,drop = FALSE] # drop=FALSE returns a matrix instead of a vector
+```
+#### subsetting lists
+```{r}
+l <- list(foo = 1:8, bar = 0.7, baz = 5:10)
+l
+l[1] # returns a list as well, since single bracket returns same class
+l[[1]] # returns a squence, not a list
+l$bar # $ is used to specify a name
+l[["bar"]] # similar to using $bar. returns a sequnce 
+l["bar"] # single bracket, so it returns a list (same class) 
+l[c(1,3)] # passing a sequence in single bracket can extract mutliple elements from a list
+
+# double bracket can be used for pass in a variable (name)
+name <- "foo"
+l[[name]] # name is a variable with contents "foo", so this grabs foo
+
+# double bracket can take integer sequence 
+x <- list(a = list(10, 12, 14), b = c(3.14, 2.81))
+x[[c(2,1)]] # the sequence for double bracket specifies the 1st element of the second sequence b
+```
+#### Partial Matching
+```{r}
+x <- list(babble = 1:5)
+x$ba # partial matching to babble using $
+x[["ba", exact=FALSE]] #partial matching using exact = false with double bracket
+```
+#### Removing NA values
+```{r}
+x <- c (5,6, NA, 4, NA, 5)
+bad <- is.na(x) # get a logical vector of the location of missing values
+x[!bad] # !bad takes the inverse of bad, which gives us all the non missing values
+
+# Using complete cases for vectors
+x <- c(1, 2, NA, 5, 6, NA)
+y <- c("a", NA, "b", "c", NA, "d")
+good <- complete.cases(x,y)
+good
+```
+### Vectorized Operations
+* sequences
+```{r}
+x <- c(10, 20, 30)
+y <- c(20, 30, 40)
+
+x + y # will add each element in each vector to the same index
+x * y
+x / y
+x < 4 # logical vector
+```
+* matricies
+```{r}
+m1 = matrix(1:9, 3, 3)
+m1
+m2 = matrix(3:11, 3, 3)
+m2
+
+m1 * m2 # not true matrix multiplication, it just multiplies each element together in the same index
+m1 / m2
+
+m1 %*% m2 # true matrix multiplcation
+```
+
+
+
+
